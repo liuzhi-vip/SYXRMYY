@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IUserMapper">
+	<resultMap type="pojo.User" id="user_mapper">
+		<id column="u_id" property="id" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<association property="p" column="P_ID" select="getPositionForId"
+			javaType="Department" />
+	</resultMap>
+	<resultMap type="pojo.Position" id="position_mapper">
+		<id column="p_id" property="p_id" />
+		<result column="p_name" property="p_name" />
+		<association property="d" column="DEPT_ID" select="getDeptForId" />
+	</resultMap>
+	<select id="getDeptForId" parameterType="Long" resultType="Department">
+		SELECT * FROM `department` WHERE d_id=#{d_id}
+	</select>
+	<select id="getPositionForId" parameterType="Long" resultMap="position_mapper">
+		SELECT * FROM `position` WHERE p_id=#{p_id}
+	</select>
+
+	<select id="getUserForNameAndPsw" parameterType="User"
+		resultMap="user_mapper">
+		SELECT * FROM `user` WHERE username=#{username} AND
+		password=#{password}
+	</select>
+	
+	<select id="checkUserForName" parameterType="String"
+		resultType="int">
+		SELECT count(username) FROM `user` WHERE username=#{username}
+	</select>
+	<select id="getUserForDeptAndPosn" parameterType="String"
+		resultType="String">
+SELECT
+username
+FROM `user` u LEFT JOIN position p ON p.p_id=u.P_ID LEFT JOIN department d ON p.DEPT_ID=d.d_id
+WHERE p.p_name like '%经理%' AND d.d_id=#{id}
+	</select>
+	
+	<select id="getUserForManage" parameterType="String"
+		resultType="String">
+SELECT
+username
+FROM `user` u LEFT JOIN position p ON p.p_id=u.P_ID 
+WHERE p.p_name like '总经理' 
+	</select>
+	
+	<select id="getUserForFinance" parameterType="String"
+		resultType="String">
+SELECT
+username
+FROM `user` u LEFT JOIN position p ON p.p_id=u.P_ID 
+WHERE p.p_name like '财务' 
+	</select>
+
+</mapper>
