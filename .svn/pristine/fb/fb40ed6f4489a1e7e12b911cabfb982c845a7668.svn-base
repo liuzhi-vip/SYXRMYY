@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="SyxRmyy:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="SyxRmyy.war">
-      <element id="artifact" artifact-name="SyxRmyy:war exploded" />
-    </root>
-  </artifact>
-</component>
